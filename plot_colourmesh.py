@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('tadv_0.5re_co2_p10_d1_i.csv')
+df = pd.read_csv('optical0.1_1re_co2_p10_d1_i.csv')
 temperature = df.to_numpy()
 temperature = temperature[:, 1:]
 (lons, n_times) = temperature.shape

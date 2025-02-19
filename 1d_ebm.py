@@ -84,14 +84,17 @@ def run(lon_step, time_step, n_days, fo, m0):
             lon = lon_rad[j]
 
             solar = get_solar(lon, q3)
-            #albedo = get_albedo(tij)
-            albedo = get_toa(tij, lon)
+            albedo = get_albedo(tij)
+            #albedo = get_toa(tij, lon)
             infra = get_infra(tij)
             c_heat = get_cheat(tij, fo)
 
             t_avg = np.average(temperature[:, i])
-            diff = 0.02 * pressure * 11.1868**(-1) * (m0/29)**2 * (t_avg/288)**12
-            diff = d_mult*diff/t_adv
+            #diff = 0.02 * pressure * 11.1868**(-1) * (m0/29)**2 * (t_avg/288)**12
+            #diff = d_mult*diff/t_adv
+            diff=t_adv
+
+            solar = solar * np.exp(-1*optical)
 
             if j==len(lon_rad)-1: #longitude +90
                 first_deriv = 0
@@ -136,11 +139,12 @@ d_mult = 1
 rp = 0.5*6371e3
 t_adv = (rp/1e3) / (time_step * period)
 print(t_adv)
+optical = 0.1
 #
 #print(diff)
 
 r = run(lon_step, time_step, n_days, fo, m0)
 df = pd.DataFrame(r)
-filename = "tadv_0.5re_co2_p" + str(pressure) + '_d' + str(d_mult) + "_i.csv"
+filename = "tadv_o" + str(optical) + "_re0.5" + "_i.csv"
 df.to_csv(filename)
 
